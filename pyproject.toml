@@ -23,6 +23,7 @@ dynamic = ["version"]
 
 [project.scripts]
 remediate_lfs = "rubin_checklfs.remediator:main"
+map_oids_lfs  = "rubin_checklfs.oid_mapper:main"
 
 [project.urls]
 Source = "https://github.com/lsst-sqre/rubin-checklfs"
