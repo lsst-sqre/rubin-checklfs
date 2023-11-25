@@ -22,6 +22,7 @@ dependencies = []
 dynamic = ["version"]
 
 [project.scripts]
+remediate_lfs = "rubin_checklfs.remediator:main"
 
 [project.urls]
 Source = "https://github.com/lsst-sqre/rubin-checklfs"

@@ -46,7 +46,7 @@ class Remediator:
         self._missing_oids_by_repo: dict[str, set[str]] = {}
 
         self._bucket = storage.Bucket(
-            client=storage.Client(), project=project, name=bucket
+            client=storage.Client(project=project), name=bucket
         )
 
     async def execute(self) -> None:
@@ -69,7 +69,7 @@ class Remediator:
     async def _check_oids(self) -> None:
         for repo in self._oids:
             oids = self._oids[repo]
-            self._logger.info(f"Checking {len(oids)} for repo {repo}")
+            self._logger.info(f"Checking {len(oids)} objects for repo {repo}")
             for oid in oids:
                 blob = storage.Blob(name=f"{repo}/{oid}", bucket=self._bucket)
                 self._logger.debug(
@@ -127,6 +127,10 @@ def _get_remediator() -> Remediator:
     )
 
 
-def __main__() -> None:
+def main() -> None:
     remediator = _get_remediator()
     asyncio.run(remediator.execute())
+
+
+if __name__ == "__main__":
+    main()

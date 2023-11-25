@@ -22,7 +22,7 @@ def parse(description: str) -> argparse.ArgumentParser:
     parser.add_argument(
         "-g",
         "--input-glob",
-        default=os.environ.get(PREFIX + "INPUT_GLOB", "."),
+        default=os.environ.get(PREFIX + "INPUT_GLOB", "oids--*.json"),
         help=(
             "Glob matching OID input JSON filenames [env: "
             + PREFIX
