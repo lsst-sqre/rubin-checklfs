@@ -94,22 +94,20 @@ class Remediator:
         for oid in self._missing_oids_by_repo:
             with tempfile.TemporaryDirectory() as tmpdirname:
                 with contextlib.chdir(tmpdirname):
-                    with open(oid, "wb") as fi:
-                        self._logger.debug(
-                            "Downloading content from AWS bucket "
-                            f"{self._orig_bucket}/{oid}"
+                    self._logger.debug(
+                        "Downloading content from AWS bucket "
+                        f"{self._orig_bucket}/{oid}"
+                    )
+                    s3.download_file(self._orig_bucket, f"data/{oid}", oid)
+                    for repo in self._missing_oids_by_repo[oid]:
+                        blob = storage.Blob(
+                            name=f"{repo}/{oid}", bucket=self._bucket
                         )
-                        s3.download_fileobj(self._orig_bucket, oid, fi)
-                        for repo in self._missing_oids_by_repo[oid]:
-                            blob = storage.Blob(
-                                name=f"{repo}/{oid}", bucket=self._bucket
-                            )
-                            self._logger.info(
-                                "Uploading content to "
-                                f"bucket {self._bucket.name}/{repo}/{oid}"
-                            )
-                            with open(oid, "rb") as fo:
-                                blob.upload_from_file(fo)
+                        self._logger.info(
+                            "Uploading content to "
+                            f"bucket {self._bucket.name}/{repo}/{oid}"
+                        )
+                        blob.upload_from_filename(oid)
 
 
 def _get_remediator() -> Remediator:
