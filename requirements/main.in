@@ -1,1 +1,2 @@
 google-cloud-storage
+boto3[crt]

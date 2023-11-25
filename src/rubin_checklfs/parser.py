@@ -50,6 +50,18 @@ def parse(description: str) -> argparse.ArgumentParser:
         ),
     )
     parser.add_argument(
+        "-o",
+        "--original_bucket",
+        default=os.environ.get(
+            PREFIX + "ORIGINAL_BUCKET", "git-lfs.lsst.codes-us-west-2"
+        ),
+        help=(
+            "GCP Bucket [ env: "
+            + PREFIX
+            + "BUCKET, 'git-lfs.lsst.codes-us-west-2']"
+        ),
+    )
+    parser.add_argument(
         "-d",
         "--debug",
         action="store_true",
