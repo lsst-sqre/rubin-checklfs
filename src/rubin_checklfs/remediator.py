@@ -152,10 +152,31 @@ class Remediator:
                     )
 
     async def _load_input_remediation_file(self) -> None:
-        pass
+        if self._remediation_input_file is None:
+            # It won't be, but mypy doesn't know that.
+            return
+        with open(self._remediation_input_file, "r") as f:
+            oiddata = json.load(f)
+        for repo in oiddata:
+            oids = oiddata[repo]
+            if repo not in self._missing_oids:
+                self._missing_oids[repo] = set()
+            for oid in oids:
+                self._missing_oids[repo].add(oid)
+                if oid not in self._missing_oids_by_repo:
+                    self._missing_oids_by_repo[oid] = set()
+                    if repo not in self._missing_oids_by_repo[oid]:
+                        self._missing_oids_by_repo[oid].add(repo)
 
     async def _write_remediation_file(self) -> None:
-        pass
+        if self._remediation_output_file is None:
+            # It won't be, but mypy doesn't know that.
+            return
+        output_obj: dict[str, list[str]] = {}
+        for repo in self._missing_oids:
+            output_obj[repo] = list(self._missing_oids[repo])
+            with open(self._remediation_output_file, "w") as f:
+                json.dump(output_obj, f, sort_keys=True, indent=2)
 
     async def _remediate(self) -> None:
         s3 = boto3.client("s3")
