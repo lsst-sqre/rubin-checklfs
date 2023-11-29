@@ -146,9 +146,9 @@ class Remediator:
                         self._missing_oids_by_repo[oid] = set()
                     self._missing_oids[repo].add(oid)
                     self._missing_oids_by_repo[oid].add(repo)
-                    self._logger.warning(
+                    self._logger.info(
                         f"Bucket {self._bucket.name} is missing "
-                        f"object {repo}/{oid}"
+                        f"object {repo}/{oid}; will upload"
                     )
 
     async def _load_input_remediation_file(self) -> None:

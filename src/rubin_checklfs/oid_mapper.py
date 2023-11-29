@@ -250,14 +250,14 @@ class OidMapper:
         client.reset("--hard")
         git_attributes = await self._locate_co_gitattributes()
         if git_attributes is None:
-            self._logger.warning(
+            self._logger.debug(
                 f"No .gitattributes file for checkout '{co}' "
                 " -- nothing to check"
             )
             return
         lfs_files = await self._get_co_lfs_file_list(git_attributes)
         if not lfs_files:
-            self._logger.warning(
+            self._logger.debug(
                 f"No LFS files managed in checkout '{co}' "
                 " -- nothing to check"
             )
@@ -275,7 +275,7 @@ class OidMapper:
                 # A symlink either points elsewhere into someplace inside the
                 # repo, in which case we'll check it there, or it points
                 # somewhere else entirely, in which case we can't check it.
-                self._logger.warning(
+                self._logger.debug(
                     f"Skipping symlink {str(fn)} -> {fn.resolve()}"
                 )
                 del self._checkout_lfs_files[checkout][str(fn)]
