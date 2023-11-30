@@ -280,6 +280,13 @@ class OidMapper:
                 )
                 del self._checkout_lfs_files[checkout][str(fn)]
                 continue
+            if fn.is_dir():
+                # Overzealous .gitattributes match
+                self._logger.debug(
+                    f"Skipping directory {str(fn)} -> {fn.resolve()}"
+                )
+                del self._checkout_lfs_files[checkout][str(fn)]
+                continue
             with open(fn, "r") as f:
                 try:
                     for ln in f:
